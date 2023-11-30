@@ -1,7 +1,6 @@
-package com.kakao.search.ui.bookmark
+package com.kakao.search.screens.bookmark
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,8 @@ import androidx.lifecycle.asLiveData
 import com.kakao.search.R
 import com.kakao.search.base.BaseFragment
 import com.kakao.search.databinding.FragmentBookmarkBinding
-import com.kakao.search.ui.bookmark.adapter.BookmarkListAdapter
-import com.kakao.search.ui.bookmark.adapter.BookmarkPresentation
+import com.kakao.search.screens.bookmark.adapter.BookmarkListAdapter
+import com.kakao.search.screens.bookmark.adapter.BookmarkPresentation
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

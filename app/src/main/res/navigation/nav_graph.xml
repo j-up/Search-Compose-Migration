@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/SearchFragment"
-        android:name="com.kakao.search.ui.search.SearchFragment"
+        android:name="com.kakao.search.screens.search.SearchFragment"
         tools:layout="@layout/fragment_search">
 
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/BookmarkFragment"
-        android:name="com.kakao.search.ui.bookmark.BookmarkFragment"
+        android:name="com.kakao.search.screens.bookmark.BookmarkFragment"
         tools:layout="@layout/fragment_bookmark" />
 
 </navigation>

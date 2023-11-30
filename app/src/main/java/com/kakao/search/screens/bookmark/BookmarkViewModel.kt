@@ -1,4 +1,4 @@
-package com.kakao.search.ui.bookmark
+package com.kakao.search.screens.bookmark
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

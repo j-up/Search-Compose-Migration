@@ -1,7 +1,6 @@
-package com.kakao.search.ui.search
+package com.kakao.search.screens.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.kakao.search.R
 import com.kakao.search.base.BaseFragment
 import com.kakao.search.databinding.FragmentSearchBinding
-import com.kakao.search.domain.model.remote.KakaoImage
-import com.kakao.search.ui.bookmark.BookmarkFragment
-import com.kakao.search.ui.search.adapter.SearchListAdapter
-import com.kakao.search.ui.search.adapter.SearchPresentation
+import com.kakao.search.screens.bookmark.BookmarkFragment
+import com.kakao.search.screens.search.adapter.SearchListAdapter
 import com.kakao.search.util.InfiniteScrollListener
 import dagger.hilt.android.AndroidEntryPoint
 

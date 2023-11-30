@@ -1,6 +1,6 @@
-package com.kakao.search.ui.search
+package com.kakao.search.screens.search
 
-import com.kakao.search.ui.search.adapter.SearchPresentation
+import com.kakao.search.screens.search.adapter.SearchPresentation
 
 sealed class SearchState {
     object OnClear: SearchState()

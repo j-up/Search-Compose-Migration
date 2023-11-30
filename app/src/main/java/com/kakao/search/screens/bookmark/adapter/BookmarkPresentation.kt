@@ -1,4 +1,4 @@
-package com.kakao.search.ui.bookmark.adapter
+package com.kakao.search.screens.bookmark.adapter
 
 sealed class BookmarkPresentation {
     enum class Type {

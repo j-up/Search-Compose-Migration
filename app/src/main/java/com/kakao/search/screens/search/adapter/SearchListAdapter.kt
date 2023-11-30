@@ -1,4 +1,4 @@
-package com.kakao.search.ui.search.adapter
+package com.kakao.search.screens.search.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
