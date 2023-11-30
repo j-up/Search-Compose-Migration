@@ -1,0 +1,4 @@
+ext.configs_common = [
+        KAKAO_ACCESS_KEY                    : "\"KakaoAK 22e999b645212e9b678fe72d7fcaaab8\"",
+        KAKAO_BASE_URL                    : "Your Key",
+]
