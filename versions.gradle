@@ -16,4 +16,8 @@ ext.versions = [
         dataStore                   : "1.0.0",
         glide                       : "4.12.0",
         javaxInject                 : "1",
+        compose                     : "1.2.1",
+        constraintLayout            : "2.0.4",
+        composeSystemUi             : "0.21.3-beta",
+        composeViewModel            : "2.5.1",
 ]
