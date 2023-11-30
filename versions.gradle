@@ -10,7 +10,7 @@ ext.versions = [
         viewModel                   : '2.5.1',
         lifeCycle                   : '2.5.1',
         navigation                  : "2.5.3",
-        kotlin                      : "1.7.21",
+        kotlin                      : "1.5.31",
         okHttp                      : "4.9.3",
         retrofit2                   : '2.9.0',
         dataStore                   : "1.0.0",
