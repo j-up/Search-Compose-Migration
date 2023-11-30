@@ -50,6 +50,9 @@ dependencies {
     implementation project(path: ':domain')
     implementation project(path: ':data')
 
+    // Activity
+    implementation "androidx.activity:activity-compose:$versions.activity"
+
     // hilt
     implementation "com.google.dagger:hilt-android:$versions.hilt"
     kapt("com.google.dagger:hilt-android-compiler:$versions.hilt")
@@ -62,7 +65,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutines"
 
-    //Gson
+    // Gson
     implementation "com.google.code.gson:gson:$versions.gson"
 
     // Serialization
@@ -93,6 +96,7 @@ dependencies {
     implementation "androidx.compose.runtime:runtime:$versions.compose"
     implementation "androidx.compose.runtime:runtime-livedata:$versions.compose"
     implementation "androidx.compose.ui:ui-tooling-preview:$versions.compose"
+    implementation "androidx.compose.material:material:$versions.compose"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$versions.composeViewModel"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$versions.composeSystemUi"
 
