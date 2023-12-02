@@ -20,4 +20,5 @@ ext.versions = [
         constraintLayout            : "2.0.4",
         composeSystemUi             : "0.21.3-beta",
         composeViewModel            : "2.5.1",
+        composeNavigation           : "2.5.1",
 ]

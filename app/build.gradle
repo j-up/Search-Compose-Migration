@@ -103,6 +103,7 @@ dependencies {
     implementation "androidx.compose.material:material:$versions.compose"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$versions.composeViewModel"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$versions.composeSystemUi"
+    implementation "androidx.navigation:navigation-compose:$versions.composeNavigation"
 
     // Constraintlayout
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
