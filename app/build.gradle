@@ -59,6 +59,7 @@ dependencies {
 
     // hilt
     implementation "com.google.dagger:hilt-android:$versions.hilt"
+    implementation "androidx.hilt:hilt-navigation-compose:$versions.hiltVM"
     kapt("com.google.dagger:hilt-android-compiler:$versions.hilt")
     kaptTest "com.google.dagger:hilt-android-compiler:$versions.hilt"
 
