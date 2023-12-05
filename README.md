@@ -14,6 +14,4 @@
 * ViewModel
   
 ## 모듈
-* **app** 
-* **data**
-* **domain**
+* 클린아키텍쳐 기반으로 **app**,**data**,**domain**으로 구성됩니다.
