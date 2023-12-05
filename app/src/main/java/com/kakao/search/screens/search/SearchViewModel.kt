@@ -1,5 +1,8 @@
 package com.kakao.search.screens.search
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -20,10 +23,8 @@ class SearchViewModel @Inject constructor(
     private val bookmarkDataStore: BookmarkDataStore,
 ) : ViewModel() {
 
-    private val _searchStateFlow = MutableStateFlow<SearchState>(SearchState.OnClear)
-
-    val searchStateLiveData: LiveData<SearchState> = _searchStateFlow.asStateFlow().asLiveData()
-    val searchStateFlow: StateFlow<SearchState> = _searchStateFlow.asStateFlow()
+    private val _searchState: MutableState<SearchState> = mutableStateOf(SearchState.OnClear)
+    val searchState: State<SearchState> = _searchState as State<SearchState>
 
     private var fetchMediaJob: Job? = null
 
@@ -61,11 +62,11 @@ class SearchViewModel @Inject constructor(
 
                     list.addAll(resultList)
                     list.add(SearchPresentation.PageNumberPresent(page))
-                    _searchStateFlow.emit(SearchState.OnImageListLoad(list.toList()))
+                    //_searchStateFlow.emit(SearchState.OnImageListLoad(list.toList()))
                 }
 
                 is GetKakaoThumbnailUseCase.Result.Failure -> {
-                    _searchStateFlow.emit(SearchState.OnFail)
+                    //_searchStateFlow.emit(SearchState.OnFail)
                 }
 
             }
@@ -78,7 +79,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun stateClear() = viewModelScope.launch(Dispatchers.IO) {
-        _searchStateFlow.emit(SearchState.OnClear)
+        //_searchStateFlow.emit(SearchState.OnClear)
         list.clear()
     }
 }

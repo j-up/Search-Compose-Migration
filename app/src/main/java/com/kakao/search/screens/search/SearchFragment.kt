@@ -89,7 +89,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
 
     private fun initObservers() {
-        viewModel.searchStateLiveData.observe(viewLifecycleOwner) { state ->
+        /*viewModel.searchStateLiveData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 SearchState.OnClear -> {
 
@@ -111,7 +111,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                     Toast.makeText(requireContext(), "에러 발생", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
+        }*/
     }
 
     private val scrollListener = object : InfiniteScrollListener(START_PAGE) {

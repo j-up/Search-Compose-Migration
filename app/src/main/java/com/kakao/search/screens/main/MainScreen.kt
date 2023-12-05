@@ -5,11 +5,14 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kakao.search.navigation.NavigationConst
+import com.kakao.search.screens.search.SearchScreen
+import com.kakao.search.screens.search.SearchViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @ExperimentalMaterialApi
@@ -42,7 +45,8 @@ private fun MainScreenNavigation(
 
 @Composable
 private fun InitSearchScreen(paddingValues: PaddingValues) {
-    
+    val searchViewModel: SearchViewModel = hiltViewModel()
+    SearchScreen(state = searchViewModel.searchState.value, paddingValues = paddingValues)
 }
 
 @Composable
