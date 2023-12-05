@@ -18,14 +18,14 @@ fun SearchScreen(state: SearchState,
 
     Column(
         modifier = modifier
-            .fillMaxHeight()
             .fillMaxWidth()
+            .fillMaxHeight()
             .padding(paddingValues)
     ) {
         Row(
             modifier = Modifier
                 .padding(8.dp)
-                .fillMaxWidth(),
+                .wrapContentHeight(),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
@@ -39,8 +39,7 @@ fun SearchScreen(state: SearchState,
             )
 
             Button(modifier = Modifier
-                .padding(start = 8.dp)
-                .wrapContentWidth(), onClick = { /*TODO*/ }) {
+                .padding(start = 8.dp), onClick = { /*TODO*/ }) {
                 Text("북마크")
             }
         }
