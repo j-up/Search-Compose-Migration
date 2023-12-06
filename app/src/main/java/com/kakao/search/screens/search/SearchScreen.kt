@@ -27,7 +27,6 @@ fun SearchScreen(
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-
     var text by remember { mutableStateOf("") }
 
     Column(
@@ -91,8 +90,13 @@ fun KaKaoMediaItemRow() {
                 .padding(8.dp),
             horizontalArrangement = Arrangement.Center
         ) {
+
+            Spacer(modifier = Modifier.weight(1f))
+
             KaKaoMediaItemImageContent()
 
+            Spacer(modifier = Modifier.weight(1f))
+            
             Image(
                 painter = painterResource(R.drawable.ic_baseline_bookmark_border_24),
                 contentDescription = "bookmark",
