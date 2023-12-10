@@ -109,6 +109,8 @@ dependencies {
     // Constraintlayout
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
 
+    implementation "io.coil-kt:coil-compose:$versions.coil"
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
