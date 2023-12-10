@@ -46,7 +46,12 @@ private fun MainScreenNavigation(
 @Composable
 private fun InitSearchScreen(paddingValues: PaddingValues) {
     val searchViewModel: SearchViewModel = hiltViewModel()
-    SearchScreen(state = searchViewModel.searchState.value, paddingValues = paddingValues)
+    SearchScreen(
+        state = searchViewModel.searchState.value,
+        paddingValues = paddingValues,
+        onFetchMediaEvent = {
+            searchViewModel.fetchMediaThumbnails(it, SearchViewModel.START_PAGE)
+        })
 }
 
 @Composable

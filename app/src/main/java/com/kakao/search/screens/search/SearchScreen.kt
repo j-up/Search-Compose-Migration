@@ -8,26 +8,40 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.kakao.search.R
 import com.kakao.search.screens.search.adapter.SearchPresentation
 import com.kakao.search.theme.Search.LocalColors
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchScreen(
     state: SearchState,
+    onFetchMediaEvent: (String) -> Unit,
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     var text by remember { mutableStateOf("") }
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val onImeAction = {
+        onFetchMediaEvent(text)
+        keyboardController?.hide()
+    }
 
     Column(
         modifier = modifier
@@ -45,6 +59,14 @@ fun SearchScreen(
 
             TextField(
                 value = text,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = androidx.compose.ui.text.input.ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        onImeAction()
+                    }
+                ),
                 onValueChange = { newText -> text = newText },
                 placeholder = { Text("검색어를 입력하세요") },
                 singleLine = true,
@@ -58,68 +80,92 @@ fun SearchScreen(
             }
         }
 
-        KakaoMediaList(listOf())
-    }
-}
+        when(state) {
+            is SearchState.OnImageListLoad -> {
+                KakaoMediaList(state.list)
+            }
 
-@Composable
-fun KakaoMediaList(list: List<SearchPresentation>) {
-    val stringList = listOf<String>("a", "b", "c", "d", "e", "f")
+            SearchState.OnClear -> {
 
-    LazyColumn(
-        contentPadding = PaddingValues(bottom = 16.dp)
-    ) {
-        items(stringList) {
-            KaKaoMediaItemRow()
+            }
+
+            SearchState.OnFail -> {
+            }
         }
     }
 }
 
 @Composable
-fun KaKaoMediaItemRow() {
-    Card(
-        shape = RoundedCornerShape(12.dp),
-        elevation = 2.dp,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
+fun KakaoMediaList(list: List<SearchPresentation>) {
+    LazyColumn(
+        contentPadding = PaddingValues(bottom = 16.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .animateContentSize()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
+        items(list) {
+            KaKaoMediaItemRow(it)
+        }
+    }
+}
 
-            Spacer(modifier = Modifier.weight(1f))
-
-            KaKaoMediaItemImageContent()
-
-            Spacer(modifier = Modifier.weight(1f))
-            
-            Image(
-                painter = painterResource(R.drawable.ic_baseline_bookmark_border_24),
-                contentDescription = "bookmark",
+@Composable
+fun KaKaoMediaItemRow(present: SearchPresentation) {
+    when(present) {
+        is SearchPresentation.ImagePresent -> {
+            Card(
+                shape = RoundedCornerShape(12.dp),
+                elevation = 2.dp,
                 modifier = Modifier
-                    .size(24.dp)
-                    .clickable { /* 북마크 클릭 시 수행할 작업 */ }
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .animateContentSize()
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    KaKaoMediaItemImageContent(present)
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    Image(
+                        painter = painterResource(R.drawable.ic_baseline_bookmark_border_24),
+                        contentDescription = "bookmark",
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clickable { /* 북마크 클릭 시 수행할 작업 */ }
+                    )
+                }
+            }
+        }
+
+        is SearchPresentation.PageNumberPresent -> {
+            Text(
+                text = present.page.toString(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 5.dp),
+                textAlign = TextAlign.Center
             )
         }
     }
 }
 
 @Composable
-fun KaKaoMediaItemImageContent() {
+fun KaKaoMediaItemImageContent(imagePresent: SearchPresentation.ImagePresent) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Image(
-            painter = painterResource(R.drawable.sample_icon),
-            contentDescription = "image",
+        AsyncImage(
+            model = imagePresent.kakaoImage.thumbnail,
+            contentDescription = "kakaoImage thumbnail",
             modifier = Modifier
                 .size(100.dp)
                 .align(Alignment.CenterHorizontally)
         )
-        Text(text = "타이틀", modifier = Modifier.padding(top = 5.dp))
+
+        Text(text = imagePresent.kakaoImage.dateToString(), modifier = Modifier.padding(top = 5.dp))
     }
 }
