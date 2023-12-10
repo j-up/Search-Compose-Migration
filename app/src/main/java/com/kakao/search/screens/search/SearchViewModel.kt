@@ -3,9 +3,7 @@ package com.kakao.search.screens.search
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.kakao.search.datastore.BookmarkDataStore
 import com.kakao.search.domain.model.remote.KakaoImage
@@ -62,11 +60,11 @@ class SearchViewModel @Inject constructor(
 
                     list.addAll(resultList)
                     list.add(SearchPresentation.PageNumberPresent(page))
-                    //_searchStateFlow.emit(SearchState.OnImageListLoad(list.toList()))
+                    _searchState.value = SearchState.OnImageListLoad(list.toList())
                 }
 
                 is GetKakaoThumbnailUseCase.Result.Failure -> {
-                    //_searchStateFlow.emit(SearchState.OnFail)
+                    _searchState.value = SearchState.OnFail
                 }
 
             }
@@ -79,7 +77,11 @@ class SearchViewModel @Inject constructor(
     }
 
     fun stateClear() = viewModelScope.launch(Dispatchers.IO) {
-        //_searchStateFlow.emit(SearchState.OnClear)
+        _searchState.value = SearchState.OnClear
         list.clear()
+    }
+
+    companion object {
+        const val START_PAGE = 1
     }
 }
