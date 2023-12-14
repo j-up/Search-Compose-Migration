@@ -4,10 +4,8 @@ import com.kakao.search.domain.model.remote.KakaoImage
 
 sealed class SearchPresentation {
     enum class Type {
-        Image, PageNumber
+        Image
     }
 
     data class ImagePresent(val kakaoImage: KakaoImage): SearchPresentation()
-
-    data class PageNumberPresent(val page: Int): SearchPresentation()
 }

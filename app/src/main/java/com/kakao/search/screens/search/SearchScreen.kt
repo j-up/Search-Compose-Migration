@@ -140,16 +140,6 @@ fun KaKaoMediaItemRow(present: SearchPresentation) {
                 }
             }
         }
-
-        is SearchPresentation.PageNumberPresent -> {
-            Text(
-                text = present.page.toString(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 5.dp),
-                textAlign = TextAlign.Center
-            )
-        }
     }
 }
 

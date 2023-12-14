@@ -59,7 +59,6 @@ class SearchViewModel @Inject constructor(
                     }
 
                     list.addAll(resultList)
-                    list.add(SearchPresentation.PageNumberPresent(page))
                     _searchState.value = SearchState.OnImageListLoad(list.toList())
                 }
 

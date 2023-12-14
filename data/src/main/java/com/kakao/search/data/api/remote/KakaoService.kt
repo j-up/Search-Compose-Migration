@@ -28,4 +28,4 @@ interface KakaoService {
 }
 
 private const val SORT_KEY_RECENCY = "recency"
-private const val DEFAULT_SIZE = 10
+private const val DEFAULT_SIZE = 50

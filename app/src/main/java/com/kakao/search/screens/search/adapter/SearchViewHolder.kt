@@ -24,11 +24,4 @@ abstract class SearchViewHolder<out MODEL : SearchPresentation>(binding: ViewDat
         }
     }
 
-    class PageNumberViewHolder(private val binding: ItemPageNumberBinding) :
-        SearchViewHolder<SearchPresentation.PageNumberPresent>(binding) {
-        override fun bind(model: SearchPresentation.PageNumberPresent) {
-            binding.page = model.page
-        }
-    }
-
 }

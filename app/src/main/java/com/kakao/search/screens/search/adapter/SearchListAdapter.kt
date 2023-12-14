@@ -21,12 +21,6 @@ class SearchListAdapter: ListAdapter<SearchPresentation, SearchViewHolder<Search
                 ),
                 bookmarkClickListener
             )
-            SearchPresentation.Type.PageNumber -> SearchViewHolder.PageNumberViewHolder(
-                getDataBinding(
-                    parent,
-                    R.layout.item_page_number
-                )
-            )
         }
     }
 
@@ -37,7 +31,6 @@ class SearchListAdapter: ListAdapter<SearchPresentation, SearchViewHolder<Search
     override fun getItemViewType(position: Int): Int {
         return when(getItem(position)) {
             is SearchPresentation.ImagePresent -> SearchPresentation.Type.Image.ordinal
-            is SearchPresentation.PageNumberPresent -> SearchPresentation.Type.PageNumber.ordinal
             else -> 0
         }
     }
@@ -77,10 +70,6 @@ class SearchListAdapter: ListAdapter<SearchPresentation, SearchViewHolder<Search
                 oldItem is SearchPresentation.ImagePresent && newItem is SearchPresentation.ImagePresent -> {
                             oldItem.kakaoImage.thumbnail == newItem.kakaoImage.thumbnail
                             && oldItem.kakaoImage.isBookmark == newItem.kakaoImage.isBookmark
-                }
-
-                oldItem is SearchPresentation.PageNumberPresent && newItem is SearchPresentation.PageNumberPresent -> {
-                            oldItem.page == newItem.page
                 }
 
                 else -> false
