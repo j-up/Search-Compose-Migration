@@ -20,11 +20,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kakao.search.R
-import com.kakao.search.screens.search.adapter.SearchPresentation
 import com.kakao.search.theme.Search.LocalColors
 
 @OptIn(ExperimentalComposeUiApi::class)

@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.kakao.search.datastore.BookmarkDataStore
 import com.kakao.search.domain.model.remote.KakaoImage
 import com.kakao.search.domain.usecase.GetKakaoThumbnailUseCase
-import com.kakao.search.screens.search.adapter.SearchPresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
