@@ -1,6 +1,7 @@
 package com.kakao.search.screens.search
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -111,6 +113,7 @@ fun KaKaoMediaItemRow(present: SearchPresentation, onBookmarkClickListener: (Kak
     when(present) {
         is SearchPresentation.ImagePresent -> {
             var isBookmarked by remember { mutableStateOf(present.kakaoImage.isBookmark) }
+            val alpha by animateFloatAsState(targetValue = if (isBookmarked) 1f else 0.3f)
 
             Card(
                 shape = RoundedCornerShape(12.dp),
@@ -140,6 +143,7 @@ fun KaKaoMediaItemRow(present: SearchPresentation, onBookmarkClickListener: (Kak
                         contentDescription = "bookmark",
                         modifier = Modifier
                             .size(24.dp)
+                            .alpha(alpha)
                             .clickable {
                                 isBookmarked = !isBookmarked
                                 onBookmarkClickListener(present.kakaoImage)
