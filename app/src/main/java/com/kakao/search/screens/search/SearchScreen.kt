@@ -137,8 +137,8 @@ fun KaKaoMediaItemRow(present: SearchPresentation, onBookmarkClickListener: (Kak
 
                     Image(
                         painter = when (isBookmarked) {
-                            true -> painterResource(R.drawable.ic_baseline_bookmark_24)
-                            else -> painterResource(R.drawable.ic_baseline_bookmark_border_24)
+                            true -> painterResource(ICON_BOOKMARK_ON)
+                            else -> painterResource(ICON_BOOKMARK_OFF)
                         },
                         contentDescription = "bookmark",
                         modifier = Modifier
@@ -171,3 +171,7 @@ fun KaKaoMediaItemImageContent(imagePresent: SearchPresentation.ImagePresent) {
         Text(text = imagePresent.kakaoImage.dateToString(), modifier = Modifier.padding(top = 5.dp))
     }
 }
+
+const val ICON_BOOKMARK_ON = R.drawable.ic_baseline_bookmark_24
+const val ICON_BOOKMARK_OFF = R.drawable.ic_baseline_bookmark_border_24
+
