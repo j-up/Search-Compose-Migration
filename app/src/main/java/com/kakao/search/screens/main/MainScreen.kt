@@ -51,7 +51,11 @@ private fun InitSearchScreen(paddingValues: PaddingValues) {
         paddingValues = paddingValues,
         onFetchMediaEvent = {
             searchViewModel.fetchMediaThumbnails(it, SearchViewModel.START_PAGE)
-        })
+        },
+        onBookmarkClickListener = {
+            searchViewModel.updateBookmark(it)
+        }
+    )
 }
 
 @Composable

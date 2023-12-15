@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kakao.search.R
+import com.kakao.search.domain.model.remote.KakaoImage
 import com.kakao.search.theme.Search.LocalColors
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -30,6 +31,7 @@ import com.kakao.search.theme.Search.LocalColors
 fun SearchScreen(
     state: SearchState,
     onFetchMediaEvent: (String) -> Unit,
+    onBookmarkClickListener: (KakaoImage) -> Unit,
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -80,7 +82,7 @@ fun SearchScreen(
 
         when(state) {
             is SearchState.OnImageListLoad -> {
-                KakaoMediaList(state.list)
+                KakaoMediaList(state.list, onBookmarkClickListener)
             }
 
             SearchState.OnClear -> {
@@ -94,20 +96,22 @@ fun SearchScreen(
 }
 
 @Composable
-fun KakaoMediaList(list: List<SearchPresentation>) {
+fun KakaoMediaList(list: List<SearchPresentation>, onBookmarkClickListener: (KakaoImage) -> Unit) {
     LazyColumn(
         contentPadding = PaddingValues(bottom = 16.dp)
     ) {
         items(list) {
-            KaKaoMediaItemRow(it)
+            KaKaoMediaItemRow(it, onBookmarkClickListener)
         }
     }
 }
 
 @Composable
-fun KaKaoMediaItemRow(present: SearchPresentation) {
+fun KaKaoMediaItemRow(present: SearchPresentation, onBookmarkClickListener: (KakaoImage) -> Unit) {
     when(present) {
         is SearchPresentation.ImagePresent -> {
+            var isBookmarked by remember { mutableStateOf(present.kakaoImage.isBookmark) }
+
             Card(
                 shape = RoundedCornerShape(12.dp),
                 elevation = 2.dp,
@@ -129,11 +133,17 @@ fun KaKaoMediaItemRow(present: SearchPresentation) {
                     Spacer(modifier = Modifier.weight(1f))
 
                     Image(
-                        painter = painterResource(R.drawable.ic_baseline_bookmark_border_24),
+                        painter = when (isBookmarked) {
+                            true -> painterResource(R.drawable.ic_baseline_bookmark_24)
+                            else -> painterResource(R.drawable.ic_baseline_bookmark_border_24)
+                        },
                         contentDescription = "bookmark",
                         modifier = Modifier
                             .size(24.dp)
-                            .clickable { /* 북마크 클릭 시 수행할 작업 */ }
+                            .clickable {
+                                isBookmarked = !isBookmarked
+                                onBookmarkClickListener(present.kakaoImage)
+                            }
                     )
                 }
             }
