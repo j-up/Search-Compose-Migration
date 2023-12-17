@@ -1,9 +1,5 @@
-package com.kakao.search.screens.bookmark.adapter
+package com.kakao.search.screens.bookmark
 
 sealed class BookmarkPresentation {
-    enum class Type {
-        Image
-    }
-
     data class ImagePresent(val thumbnail: String): BookmarkPresentation()
 }
