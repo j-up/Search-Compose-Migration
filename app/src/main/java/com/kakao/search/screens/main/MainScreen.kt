@@ -53,6 +53,7 @@ private fun InitSearchScreen(paddingValues: PaddingValues, navController: NavHos
         state = searchViewModel.searchState.value,
         paddingValues = paddingValues,
         onFetchMediaEvent = {
+            searchViewModel.stateClear()
             searchViewModel.fetchMediaThumbnails(it, SearchViewModel.START_PAGE)
         },
         onBookmarkClickListener = {
