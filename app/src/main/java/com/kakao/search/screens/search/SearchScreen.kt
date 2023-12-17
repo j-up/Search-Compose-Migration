@@ -34,6 +34,7 @@ fun SearchScreen(
     state: SearchState,
     onFetchMediaEvent: (String) -> Unit,
     onBookmarkClickListener: (KakaoImage) -> Unit,
+    onBookmarkScreenButtonListener: () -> Unit,
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -77,7 +78,7 @@ fun SearchScreen(
             )
 
             Button(modifier = Modifier
-                .padding(start = 8.dp), onClick = { /*TODO*/ }) {
+                .padding(start = 8.dp), onClick = { onBookmarkScreenButtonListener() }) {
                 Text("북마크")
             }
         }

@@ -11,6 +11,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kakao.search.navigation.NavigationConst
+import com.kakao.search.screens.bookmark.BookmarkPresentation
+import com.kakao.search.screens.bookmark.BookmarkScreen
+import com.kakao.search.screens.bookmark.BookmarkViewModel
 import com.kakao.search.screens.search.SearchScreen
 import com.kakao.search.screens.search.SearchViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -34,7 +37,7 @@ private fun MainScreenNavigation(
 ) {
     NavHost(navController = navController, startDestination = NavigationConst.Search.route) {
         composable(NavigationConst.Search.route) {
-            InitSearchScreen(paddingValues)
+            InitSearchScreen(paddingValues, navController)
         }
 
         composable(NavigationConst.Bookmark.route) {
@@ -44,7 +47,7 @@ private fun MainScreenNavigation(
 }
 
 @Composable
-private fun InitSearchScreen(paddingValues: PaddingValues) {
+private fun InitSearchScreen(paddingValues: PaddingValues, navController: NavHostController) {
     val searchViewModel: SearchViewModel = hiltViewModel()
     SearchScreen(
         state = searchViewModel.searchState.value,
@@ -54,11 +57,26 @@ private fun InitSearchScreen(paddingValues: PaddingValues) {
         },
         onBookmarkClickListener = {
             searchViewModel.updateBookmark(it)
+        },
+        onBookmarkScreenButtonListener = {
+            navController.navigate(NavigationConst.Bookmark.route)
         }
     )
 }
 
 @Composable
 private fun InitBookmarkScreen(paddingValues: PaddingValues) {
+    val bookmarkViewModel: BookmarkViewModel = hiltViewModel()
 
+    BookmarkScreen(
+        state = bookmarkViewModel.bookmarkState.value,
+        paddingValues = paddingValues,
+        onBookmarkClickListener = {
+            if (it is BookmarkPresentation.ImagePresent) {
+                bookmarkViewModel.deleteBookmark(it.thumbnail)
+            }
+        }
+    )
+
+    bookmarkViewModel.fetchDataStoreBookmark()
 }
