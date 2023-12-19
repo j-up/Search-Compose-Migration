@@ -25,8 +25,6 @@ class SearchViewModel @Inject constructor(
 
     private var fetchMediaJob: Job? = null
 
-    private val list: MutableList<SearchPresentation> = mutableListOf()
-
     fun fetchMediaThumbnails(query: String, page: Int) {
         if (fetchMediaJob?.isActive == true) {
             fetchMediaJob?.cancel()
@@ -53,12 +51,7 @@ class SearchViewModel @Inject constructor(
                         )
                     }
 
-                    if (list.containsAll(resultList)) {
-                        return@launch
-                    }
-
-                    list.addAll(resultList)
-                    _searchState.value = SearchState.OnImageListLoad(list.toList())
+                    _searchState.value = SearchState.OnImageListLoad(resultList)
                 }
 
                 is GetKakaoThumbnailUseCase.Result.Failure -> {
@@ -71,12 +64,26 @@ class SearchViewModel @Inject constructor(
     }
 
     fun updateBookmark(kakaoImage: KakaoImage) = viewModelScope.launch(Dispatchers.IO) {
+        if (_searchState.value is SearchState.OnImageListLoad) {
+
+            val updateList = (_searchState.value as SearchState.OnImageListLoad).list.map { present ->
+                when {
+                    present is SearchPresentation.ImagePresent && present.kakaoImage == kakaoImage -> {
+                        present.copy(kakaoImage.copy(isBookmark = !kakaoImage.isBookmark))
+                    }
+
+                    else -> present
+                }
+            }
+
+            _searchState.value = SearchState.OnImageListLoad(updateList)
+        }
+
         bookmarkDataStore.updateBookmark(kakaoImage.thumbnail, !kakaoImage.isBookmark)
     }
 
     fun stateClear() = viewModelScope.launch(Dispatchers.IO) {
         _searchState.value = SearchState.OnClear
-        list.clear()
     }
 
     companion object {
