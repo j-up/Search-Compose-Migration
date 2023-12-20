@@ -64,20 +64,27 @@ class SearchViewModel @Inject constructor(
     }
 
     fun updateBookmark(kakaoImage: KakaoImage) = viewModelScope.launch(Dispatchers.IO) {
-        if (_searchState.value is SearchState.OnImageListLoad) {
+        when (val stateValue = searchState.value) {
+            is SearchState.OnImageListLoad -> {
+                val updateList = stateValue.list.filterIsInstance<SearchPresentation.ImagePresent>().map { present ->
+                    when {
+                        present is SearchPresentation.ImagePresent && present.kakaoImage == kakaoImage -> {
+                            present.copy(kakaoImage = kakaoImage.copy(isBookmark = !kakaoImage.isBookmark))
+                        }
 
-            val updateList = (_searchState.value as SearchState.OnImageListLoad).list.map { present ->
-                when {
-                    present is SearchPresentation.ImagePresent && present.kakaoImage == kakaoImage -> {
-                        present.copy(kakaoImage.copy(isBookmark = !kakaoImage.isBookmark))
+                        else -> present
                     }
-
-                    else -> present
                 }
+
+
+                _searchState.value = SearchState.OnImageListLoad(updateList)
             }
 
-            _searchState.value = SearchState.OnImageListLoad(updateList)
+            SearchState.OnClear -> {}
+
+            SearchState.OnFail -> {}
         }
+
 
         bookmarkDataStore.updateBookmark(kakaoImage.thumbnail, !kakaoImage.isBookmark)
     }
