@@ -6,6 +6,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,8 +14,10 @@ import androidx.navigation.compose.rememberNavController
 import com.kakao.search.navigation.NavigationConst
 import com.kakao.search.screens.bookmark.BookmarkPresentation
 import com.kakao.search.screens.bookmark.BookmarkScreen
+import com.kakao.search.screens.bookmark.BookmarkState
 import com.kakao.search.screens.bookmark.BookmarkViewModel
 import com.kakao.search.screens.search.SearchScreen
+import com.kakao.search.screens.search.SearchState
 import com.kakao.search.screens.search.SearchViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -49,8 +52,10 @@ private fun MainScreenNavigation(
 @Composable
 private fun InitSearchScreen(paddingValues: PaddingValues, navController: NavHostController) {
     val searchViewModel: SearchViewModel = hiltViewModel()
+    val uiState = searchViewModel.searchStateFlow.collectAsStateWithLifecycle(SearchState.OnClear)
+
     SearchScreen(
-        state = searchViewModel.searchState.value,
+        state = uiState.value,
         paddingValues = paddingValues,
         onFetchMediaEvent = {
             searchViewModel.stateClear()
@@ -68,9 +73,10 @@ private fun InitSearchScreen(paddingValues: PaddingValues, navController: NavHos
 @Composable
 private fun InitBookmarkScreen(paddingValues: PaddingValues) {
     val bookmarkViewModel: BookmarkViewModel = hiltViewModel()
+    val uiState = bookmarkViewModel.bookmarkStateFlow.collectAsStateWithLifecycle(BookmarkState.OnClear)
 
     BookmarkScreen(
-        state = bookmarkViewModel.bookmarkState.value,
+        state = uiState.value,
         paddingValues = paddingValues,
         onBookmarkClickListener = {
             if (it is BookmarkPresentation.ImagePresent) {
@@ -78,6 +84,4 @@ private fun InitBookmarkScreen(paddingValues: PaddingValues) {
             }
         }
     )
-
-    bookmarkViewModel.fetchDataStoreBookmark()
 }

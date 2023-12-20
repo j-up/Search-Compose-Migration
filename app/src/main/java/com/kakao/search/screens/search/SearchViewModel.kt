@@ -1,8 +1,5 @@
 package com.kakao.search.screens.search
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakao.search.datastore.BookmarkDataStore
@@ -20,8 +17,8 @@ class SearchViewModel @Inject constructor(
     private val bookmarkDataStore: BookmarkDataStore,
 ) : ViewModel() {
 
-    private val _searchState: MutableState<SearchState> = mutableStateOf(SearchState.OnClear)
-    val searchState: State<SearchState> = _searchState as State<SearchState>
+    private val _searchStateFlow = MutableStateFlow<SearchState>(SearchState.OnClear)
+    val searchStateFlow: StateFlow<SearchState> = _searchStateFlow.asStateFlow()
 
     private var fetchMediaJob: Job? = null
 
@@ -50,12 +47,11 @@ class SearchViewModel @Inject constructor(
                             )
                         )
                     }
-
-                    _searchState.value = SearchState.OnImageListLoad(resultList)
+                    _searchStateFlow.emit(SearchState.OnImageListLoad(resultList))
                 }
 
                 is GetKakaoThumbnailUseCase.Result.Failure -> {
-                    _searchState.value = SearchState.OnFail
+                    _searchStateFlow.emit(SearchState.OnFail)
                 }
 
             }
@@ -64,7 +60,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun updateBookmark(kakaoImage: KakaoImage) = viewModelScope.launch(Dispatchers.IO) {
-        when (val stateValue = searchState.value) {
+        when (val stateValue = searchStateFlow.value) {
             is SearchState.OnImageListLoad -> {
                 val updateList = stateValue.list.filterIsInstance<SearchPresentation.ImagePresent>().map { present ->
                     when {
@@ -76,8 +72,7 @@ class SearchViewModel @Inject constructor(
                     }
                 }
 
-
-                _searchState.value = SearchState.OnImageListLoad(updateList)
+                _searchStateFlow.emit(SearchState.OnImageListLoad(updateList))
             }
 
             SearchState.OnClear -> {}
@@ -85,12 +80,11 @@ class SearchViewModel @Inject constructor(
             SearchState.OnFail -> {}
         }
 
-
         bookmarkDataStore.updateBookmark(kakaoImage.thumbnail, !kakaoImage.isBookmark)
     }
 
     fun stateClear() = viewModelScope.launch(Dispatchers.IO) {
-        _searchState.value = SearchState.OnClear
+        _searchStateFlow.emit(SearchState.OnClear)
     }
 
     companion object {
