@@ -56,6 +56,7 @@ private fun InitSearchScreen(paddingValues: PaddingValues, navController: NavHos
 
     SearchScreen(
         state = uiState.value,
+        bookmarkFlow = searchViewModel.bookmarkDataStore.bookmarkFlow,
         paddingValues = paddingValues,
         onFetchMediaEvent = {
             searchViewModel.stateClear()

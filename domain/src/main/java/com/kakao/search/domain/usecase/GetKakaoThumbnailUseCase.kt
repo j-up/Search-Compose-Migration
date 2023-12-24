@@ -17,7 +17,6 @@ class GetKakaoThumbnailUseCase @Inject constructor(
     suspend fun invoke(
         query: String,
         page: Int,
-        bookmarkMap: Map<String, Boolean>,
         scope: CoroutineScope,
     ): Result {
         var list: List<Result> = emptyList()
@@ -26,11 +25,7 @@ class GetKakaoThumbnailUseCase @Inject constructor(
             try {
                 when (val videoList = kakaoRepository.getSearchVideo(query, page)) {
                     is Resource.Success -> {
-                        Result.Success(videoList.data.sorted().map {
-                            it.copy(
-                                isBookmark = bookmarkMap[it.thumbnail] ?: false
-                            )
-                        })
+                        Result.Success(videoList.data.sorted())
                     }
 
                     is Resource.Failure -> {
@@ -46,11 +41,7 @@ class GetKakaoThumbnailUseCase @Inject constructor(
             try {
                 when (val imageList = kakaoRepository.getSearchImage(query, page)) {
                     is Resource.Success -> {
-                        Result.Success(imageList.data.sorted().map {
-                            it.copy(
-                                isBookmark = bookmarkMap[it.thumbnail] ?: false
-                            )
-                        })
+                        Result.Success(imageList.data.sorted())
                     }
                     is Resource.Failure -> Result.Failure
                 }

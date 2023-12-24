@@ -1,7 +1,6 @@
 package com.kakao.search.screens.search
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,7 +19,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -28,11 +26,15 @@ import coil.compose.AsyncImage
 import com.kakao.search.R
 import com.kakao.search.domain.model.remote.KakaoImage
 import com.kakao.search.theme.Search.LocalColors
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchScreen(
     state: SearchState,
+    bookmarkFlow: Flow<Map<String, Boolean>>,
     onFetchMediaEvent: (String) -> Unit,
     onBookmarkClickListener: (KakaoImage) -> Unit,
     onBookmarkScreenButtonListener: () -> Unit,
@@ -86,7 +88,7 @@ fun SearchScreen(
 
         when(state) {
             is SearchState.OnImageListLoad -> {
-                KakaoMediaList(state.list, onBookmarkClickListener)
+                KakaoMediaList(state.list, onBookmarkClickListener, bookmarkFlow)
             }
 
             SearchState.OnClear -> {
@@ -100,22 +102,25 @@ fun SearchScreen(
 }
 
 @Composable
-fun KakaoMediaList(list: List<SearchPresentation>, onBookmarkClickListener: (KakaoImage) -> Unit) {
+fun KakaoMediaList(
+    list: List<SearchPresentation>,
+    onBookmarkClickListener: (KakaoImage) -> Unit,
+    bookmarkFlow: Flow<Map<String, Boolean>>,
+) {
     LazyColumn(
         contentPadding = PaddingValues(bottom = 16.dp)
     ) {
         items(list) {
-            KaKaoMediaItemRow(it, onBookmarkClickListener)
+            KaKaoMediaItemRow(it, onBookmarkClickListener, bookmarkFlow)
         }
     }
 }
 
 @Composable
-fun KaKaoMediaItemRow(present: SearchPresentation, onBookmarkClickListener: (KakaoImage) -> Unit) {
+fun KaKaoMediaItemRow(present: SearchPresentation, onBookmarkClickListener: (KakaoImage) -> Unit, bookmarkFlow: Flow<Map<String, Boolean>>) {
     when(present) {
         is SearchPresentation.ImagePresent -> {
             var isBookmarked by remember { mutableStateOf(present.kakaoImage.isBookmark) }
-            val alpha by animateFloatAsState(targetValue = if (isBookmarked) 1f else 0.3f)
 
             Card(
                 shape = RoundedCornerShape(12.dp),
@@ -137,6 +142,16 @@ fun KaKaoMediaItemRow(present: SearchPresentation, onBookmarkClickListener: (Kak
 
                     Spacer(modifier = Modifier.weight(1f))
 
+                    LaunchedEffect(Unit) {
+                        withContext(Dispatchers.IO) {
+                            bookmarkFlow.collect {
+                                withContext(Dispatchers.Main) {
+                                    isBookmarked = it[present.kakaoImage.thumbnail] ?: false
+                                }
+                            }
+                        }
+                    }
+
                     Image(
                         painter = when (isBookmarked) {
                             true -> painterResource(ICON_BOOKMARK_ON)
@@ -145,7 +160,6 @@ fun KaKaoMediaItemRow(present: SearchPresentation, onBookmarkClickListener: (Kak
                         contentDescription = "bookmark",
                         modifier = Modifier
                             .size(24.dp)
-                            .alpha(alpha)
                             .clickable {
                                 isBookmarked = !isBookmarked
                                 onBookmarkClickListener(present.kakaoImage)

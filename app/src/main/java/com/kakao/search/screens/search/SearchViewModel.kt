@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val getKakaoThumbnailUseCase: GetKakaoThumbnailUseCase,
-    private val bookmarkDataStore: BookmarkDataStore,
+    val bookmarkDataStore: BookmarkDataStore,
 ) : ViewModel() {
 
     private val _searchStateFlow = MutableStateFlow<SearchState>(SearchState.OnClear)
@@ -32,7 +32,6 @@ class SearchViewModel @Inject constructor(
             val result = getKakaoThumbnailUseCase.invoke(
                 query = query,
                 page = page,
-                bookmarkMap = bookmarkDataStore.bookmarkFlow.first(),
                 scope = this
             )
 
